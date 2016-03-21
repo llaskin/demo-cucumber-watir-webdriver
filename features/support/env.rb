@@ -41,8 +41,8 @@ After do | scenario |
   @browser.close
 
   if scenario.passed?
-    @browser.execute_script("sauce:job-result=passed");
+    `curl -s -u #{ENV['SAUCE_USERNAME']}:#{ENV['SAUCE_ACCESS_KEY']} \ -X PUT \ -H "Content-Type: application/json" \ -d '{"tags": ["testing-rest-api"],  "name": "REST API Test", "passed": true,  "custom-data": {"source": "Testing REST API"}}' \ https://saucelabs.com/rest/v1/#{ENV['SAUCE_USERNAME']}/jobs/#{sessionid}`
   else
-	@browser.execute_script("sauce:job-result=failed");
+    `curl -s -u #{ENV['SAUCE_USERNAME']}:#{ENV['SAUCE_ACCESS_KEY']} \ -X PUT \ -H "Content-Type: application/json" \ -d '{"tags": ["testing-rest-api"],  "name": "REST API Test", "passed": false,  "custom-data": {"source": "Testing REST API"}}' \ https://saucelabs.com/rest/v1/#{ENV['SAUCE_USERNAME']}/jobs/#{sessionid}`
   end
 end
