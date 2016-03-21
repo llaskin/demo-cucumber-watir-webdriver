@@ -2,7 +2,6 @@ begin require 'rspec/expectations'; rescue LoadError; require 'spec/expectations
 require 'watir-webdriver'
 require 'page-object'
 require 'require_all'
-require 'sauce_whisk'
 
 begin
   require_all "#{File.join(File.expand_path(File.dirname(__FILE__)), '..', 'page_objects')}"
@@ -34,6 +33,7 @@ Before do | scenario |
 end
 
 After do | scenario |
+  sleep 3
   sessionid = @browser.driver.send(:bridge).session_id
   jobname = "#{scenario.feature.name} - #{scenario.name}"
 
@@ -42,8 +42,8 @@ After do | scenario |
   @browser.close
 
   if scenario.passed?
-    SauceWhisk::Jobs.pass_job sessionid
+    @browser.execute_script("sauce:job-result=passed");
   else
-    SauceWhisk::Jobs.fail_job sessionid
+	@browser.execute_script("sauce:job-result=failed");
   end
 end
