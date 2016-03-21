@@ -26,7 +26,7 @@ Before do | scenario |
   }
 
   url = "http://#{ENV['TESTER_SAUCE_USERNAME']}:#{ENV['TESTER_SAUCE_ACCESS_KEY']}@ondemand.saucelabs.com:80/wd/hub".strip
-
+  puts @build
   client = Selenium::WebDriver::Remote::Http::Default.new
   client.timeout = 180
   @browser = Watir::Browser.new(:remote, :url => url, :desired_capabilities => capabilities_config, :http_client => client)
